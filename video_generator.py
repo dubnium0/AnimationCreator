@@ -1,224 +1,361 @@
 import os
 import json
 import sys
-from moviepy.editor import ImageClip, AudioFileClip, concatenate_videoclips
+import time
+from datetime import datetime
+from moviepy.editor import ImageClip, AudioFileClip, VideoFileClip, concatenate_videoclips
 from PIL import Image
 import requests
 from io import BytesIO
 from openai import OpenAI
+import google.generativeai as genai
 from dotenv import load_dotenv
 
-# Load API key from .env file
+
+
+# Load API keys from .env file
 load_dotenv()
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-# Configure OpenAI client
-client = OpenAI(api_key=OPENAI_API_KEY)
-
-def generate_tts_openai(text, output_file, voice="alloy"):
-    """
-    Converts text to audio file using OpenAI TTS API.
+class VideoGenerator:
+    """Unified video generator class for all video generation methods"""
     
-    Args:
-        text (str): Text to convert
-        output_file (str): Output audio file path
-        voice (str): Voice model (alloy, echo, fable, onyx, nova, shimmer)
-    """
-    try:
-        response = client.audio.speech.create(
-            model="tts-1",  # or "tts-1-hd" for higher quality
-            voice=voice,
-            input=text
-        )
-        
-        response.stream_to_file(output_file)
-        print(f"Audio created with OpenAI TTS: {output_file}")
-        return True
-    except Exception as e:
-        print(f"OpenAI TTS error: {str(e)}")
-        return False
-
-def generate_image_with_openai(prompt, output_file):
-    """
-    Creates image using OpenAI DALL-E API.
-    
-    Args:
-        prompt (str): Image generation prompt
-        output_file (str): Output image file path
-    """
-    try:
-        # General prompt enhancement
-        enhanced_prompt = f"""
-        Create a high-quality, engaging illustration for this scene:
-        {prompt}
-        
-        The image should be:
-        - Visually appealing and professional
-        - Clear and easy to understand
-        - Colorful and engaging
-        - Detailed but not cluttered
-        - Consistent with the overall story style
+    def __init__(self, openai_api_key=None):
         """
+        Initialize the video generator with API keys.
         
-        # Send request to OpenAI DALL-E API
-        response = client.images.generate(
-            model="dall-e-3",
-            prompt=enhanced_prompt,
-            size="1024x1024",
-            quality="standard",
-            n=1
-        )
+        Args:
+            openai_api_key (str): OpenAI API key
+        """
+        self.openai_api_key = openai_api_key or OPENAI_API_KEY
         
-        # Get image URL
-        image_url = response.data[0].url
-        
-        # Download and save image
-        image_response = requests.get(image_url)
-        if image_response.status_code == 200:
-            with open(output_file, 'wb') as f:
-                f.write(image_response.content)
-            print(f"Image successfully created: {output_file}")
-            return True
+        # Initialize OpenAI client if key is provided
+        if self.openai_api_key:
+            self.openai_client = OpenAI(api_key=self.openai_api_key)
         else:
-            print("Image could not be downloaded")
-            return False
-            
-    except Exception as e:
-        print(f"Image creation error: {str(e)}")
-        return False
+            self.openai_client = None
 
-def create_scene(scene_data, scene_number, output_dir, story_context=None):
+class ImageBasedVideoGenerator(VideoGenerator):
+    """Image-based video generator using OpenAI DALL-E + TTS"""
+    
+    def generate_tts_openai(self, text, output_file, voice="alloy"):
+        """
+        Converts text to audio file using OpenAI TTS API.
+        
+        Args:
+            text (str): Text to convert
+            output_file (str): Output audio file path
+            voice (str): Voice model (alloy, echo, fable, onyx, nova, shimmer)
+        """
+        try:
+            if not self.openai_client:
+                raise Exception("OpenAI client not initialized")
+                
+            response = self.openai_client.audio.speech.create(
+                model="tts-1",
+                voice=voice,
+                input=text
+            )
+            
+            response.stream_to_file(output_file)
+            print(f"Audio created with OpenAI TTS: {output_file}")
+            return True
+        except Exception as e:
+            print(f"OpenAI TTS error: {str(e)}")
+            return False
+
+    def generate_image_with_openai(self, prompt, output_file, image_size="1024x1792"):
+        """
+        Creates image using OpenAI DALL-E API.
+        
+        Args:
+            prompt (str): Image generation prompt
+            output_file (str): Output image file path
+            image_size (str): Image size (1024x1024, 1024x1792, 1792x1024)
+        """
+        try:
+            if not self.openai_client:
+                raise Exception("OpenAI client not initialized")
+                
+            # General prompt enhancement
+            enhanced_prompt = f"""
+            Create a high-quality, engaging illustration for this scene:
+            {prompt}
+            
+            The image should be:
+            - Visually appealing and professional
+            - Clear and easy to understand
+            - Colorful and engaging
+            - Detailed but not cluttered
+            - Consistent with the overall story style
+            """
+            
+            # Send request to OpenAI DALL-E API
+            response = self.openai_client.images.generate(
+                model="dall-e-3",
+                prompt=enhanced_prompt,
+                size=image_size,
+                quality="standard",
+                n=1
+            )
+            
+            # Get image URL
+            image_url = response.data[0].url
+            
+            # Download and save image
+            image_response = requests.get(image_url)
+            if image_response.status_code == 200:
+                with open(output_file, 'wb') as f:
+                    f.write(image_response.content)
+                print(f"Image successfully created: {output_file}")
+                return True
+            else:
+                print("Image could not be downloaded")
+                return False
+                
+        except Exception as e:
+            print(f"Image creation error: {str(e)}")
+            return False
+
+    def create_scene(self, scene_data, scene_number, output_dir, story_context=None, voice="alloy", platform_specs=None):
+        """
+        Creates a single scene using OpenAI DALL-E + TTS.
+        
+        Args:
+            scene_data (dict): Scene data
+            scene_number (int): Scene number
+            output_dir (str): Output directory
+            story_context (dict): Story context
+            voice (str): Voice for TTS
+            platform_specs (dict): Platform specifications with width, height, etc.
+        
+        Returns:
+            tuple: (video_clip, duration)
+        """
+        # File paths
+        image_file = os.path.join(output_dir, f"scene_{scene_number}.png")
+        audio_file = os.path.join(output_dir, f"scene_{scene_number}.wav")
+        
+        # Determine image size based on platform specs
+        image_size = "1024x1792"  # Default
+        if platform_specs:
+            width = platform_specs.get('width', 1024)
+            height = platform_specs.get('height', 1792)
+            
+            # Map to supported DALL-E sizes
+            if width == height:  # Square
+                image_size = "1024x1024"
+            elif width > height:  # Landscape
+                image_size = "1792x1024"
+            else:  # Portrait
+                image_size = "1024x1792"
+        
+        # Create image
+        if not self.generate_image_with_openai(scene_data["image_prompt"], image_file, image_size):
+            return None, 0
+        
+        # Create audio
+        if not self.generate_tts_openai(scene_data["narration"], audio_file, voice):
+            return None, 0
+        
+        try:
+            # Load audio to get duration
+            audio_clip = AudioFileClip(audio_file)
+            duration = audio_clip.duration
+            
+            # Create image clip with audio duration
+            image_clip = ImageClip(image_file, duration=duration)
+            
+            # Resize image to match platform specs
+            if platform_specs:
+                target_width = platform_specs.get('width', 1080)
+                target_height = platform_specs.get('height', 1920)
+                # Use newsize parameter to avoid PIL.Image.ANTIALIAS deprecation
+                image_clip = image_clip.resize(newsize=(target_width, target_height))
+            
+            # Combine image and audio
+            video_clip = image_clip.set_audio(audio_clip)
+            
+            return video_clip, duration
+            
+        except Exception as e:
+            print(f"Scene creation error: {str(e)}")
+            return None, 0
+
+    def process_story_to_video(self, story_file, output_dir, voice="alloy", platform_specs=None):
+        """
+        Process entire story JSON file into a video.
+        
+        Args:
+            story_file (str): Path to story JSON file
+            output_dir (str): Output directory
+            voice (str): Voice for TTS
+            platform_specs (dict): Platform specifications
+        
+        Returns:
+            tuple: (final_video_path, success_status)
+        """
+        try:
+            # Read story data
+            with open(story_file, 'r', encoding='utf-8') as f:
+                story_data = json.load(f)
+            
+            # Create output directory
+            os.makedirs(output_dir, exist_ok=True)
+            
+            # Process each scene
+            video_clips = []
+            for i, scene in enumerate(story_data['scenes'], 1):
+                print(f"Processing scene {i}/{len(story_data['scenes'])}...")
+                
+                video_clip, duration = self.create_scene(scene, i, output_dir, story_data, voice, platform_specs)
+                
+                if video_clip:
+                    video_clips.append(video_clip)
+                else:
+                    print(f"Failed to create scene {i}")
+            
+            if video_clips:
+                # Combine all clips
+                final_video = concatenate_videoclips(video_clips)
+                
+                # Save final video
+                safe_title = "".join(c for c in story_data['story_title'] if c.isalnum() or c in (' ', '-', '_')).rstrip()
+                output_file = os.path.join(output_dir, f"{safe_title.replace(' ', '_')}_image_based.mp4")
+                final_video.write_videofile(output_file, fps=24, verbose=False, logger=None)
+                
+                # Clean up
+                for clip in video_clips:
+                    clip.close()
+                final_video.close()
+                
+                print(f"Final video created: {output_file}")
+                return output_file, True
+            else:
+                print("No video clips were created")
+                return None, False
+                
+        except Exception as e:
+            print(f"Error processing story to video: {str(e)}")
+            return None, False
+
+
+
+
+
+
+
+# Factory function to create appropriate generator
+def create_video_generator(method, openai_api_key=None, gemini_api_key=None):
     """
-    Creates a single scene.
+    Factory function to create the appropriate video generator.
     
     Args:
-        scene_data (dict): Scene data
-        scene_number (int): Scene number
-        output_dir (str): Output directory
-        story_context (dict): Story context
+        method (str): Video generation method ('image_based')
+        openai_api_key (str): OpenAI API key
+        gemini_api_key (str): Google Gemini API key
     
     Returns:
-        tuple: (video_clip, duration)
+        VideoGenerator: Appropriate generator instance
     """
-    # File paths
-    image_file = os.path.join(output_dir, f"scene_{scene_number}.png")
-    audio_file = os.path.join(output_dir, f"scene_{scene_number}.wav")
-    
-    # Create image
-    if not generate_image_with_openai(scene_data["image_prompt"], image_file):
-        return None, 0
-    
-    # Create audio (use default voice)
-    if not generate_tts_openai(scene_data["narration"], audio_file, "alloy"):
-        return None, 0
-    
-    # Create video clip
-    try:
-        image_clip = ImageClip(image_file)
-        audio_clip = AudioFileClip(audio_file)
-        
-        # Set image duration to audio duration
-        video_clip = image_clip.set_duration(audio_clip.duration)
-        video_clip = video_clip.set_audio(audio_clip)
-        
-        return video_clip, audio_clip.duration
-    except Exception as e:
-        print(f"Scene creation error: {str(e)}")
-        return None, 0
+    if method == 'image_based':
+        return ImageBasedVideoGenerator(openai_api_key, gemini_api_key)
 
-def create_video(story_file, output_dir="output"):
+
+    else:
+        raise ValueError(f"Unknown video generation method: {method}")
+
+# Model information functions
+def get_model_info(method):
     """
-    Converts story to video.
+    Get information about a specific video generation method.
     
     Args:
-        story_file (str): Story JSON file
-        output_dir (str): Output directory
-    """
-    # Create output directory
-    os.makedirs(output_dir, exist_ok=True)
+        method (str): Video generation method
     
-    # Read story data
+    Returns:
+        dict: Model information
+    """
+    model_info = {
+        'image_based': {
+            "model_name": "Image-Based (OpenAI DALL-E + TTS)",
+            "description": "Creates videos from generated images and audio",
+            "features": [
+                "High-quality image generation",
+                "Natural voice synthesis",
+                "Platform-specific optimization",
+                "Multiple voice options"
+            ],
+            "requirements": ["OpenAI API key"],
+            "status": "Fully implemented"
+        },
+
+
+
+    }
+    
+    return model_info.get(method, {"error": "Unknown method"})
+
+# Convenience functions for backward compatibility
+def process_story_to_videos_image_based(openai_api_key, story_file, output_dir, voice="alloy", platform_specs=None):
+    """Backward compatibility function for image-based video generation"""
+    generator = ImageBasedVideoGenerator(openai_api_key)
+    return generator.process_story_to_video(story_file, output_dir, voice, platform_specs)
+
+
+
+
+
+
+
+# Streamlit UI Video Generation Functions
+def generate_video_ui(story_file, voice, platform_specs, openai_key, progress_callback=None, status_callback=None):
+    """
+    Generate video with Streamlit UI integration using unified generator
+    
+    Args:
+        story_file (str): Path to story JSON file
+        voice (str): Voice for TTS
+        platform_specs (dict): Platform specifications
+        openai_key (str): OpenAI API key
+        progress_callback: Function to update progress
+        status_callback: Function to update status text
+    
+    Returns:
+        tuple: (final_video_path, success_status, story_data)
+    """
     try:
+        # Read story data
         with open(story_file, 'r', encoding='utf-8') as f:
             story_data = json.load(f)
-    except FileNotFoundError:
-        print(f"Error: {story_file} file not found!")
-        return
-    except json.JSONDecodeError:
-        print(f"Error: {story_file} is not a valid JSON file!")
-        return
-    
-    # Check required fields
-    required_fields = ['story_title', 'scenes']
-    for field in required_fields:
-        if field not in story_data:
-            print(f"Error: '{field}' field not found in JSON file!")
-            return
-    
-    print(f"Creating story: {story_data['story_title']}")
-    print(f"Total number of scenes: {len(story_data['scenes'])}")
-    
-    # Create video clips for each scene
-    video_clips = []
-    total_duration = 0
-    
-    for i, scene in enumerate(story_data["scenes"], 1):
-        print(f"\nCreating scene {i}/{len(story_data['scenes'])}...")
-        print(f"Scene description: {scene['narration'][:50]}...")
         
-        video_clip, duration = create_scene(scene, scene.get("scene_number", i), output_dir, story_data)
-        if video_clip:
-            video_clips.append(video_clip)
-            total_duration += duration
-            print(f"Scene {i} successfully created ({duration:.1f} seconds)")
+        total_scenes = len(story_data['scenes'])
+        if status_callback:
+            status_callback(f"🎬 Video oluşturuluyor... ({total_scenes} sahne)")
+        
+        # Create output directory
+        output_dir = "output"
+        os.makedirs(output_dir, exist_ok=True)
+        
+        if progress_callback:
+            progress_callback(20)
+        if status_callback:
+            status_callback("🚀 Unified generator ile video işlemi başlatılıyor...")
+        
+        # Process story to video using unified generator
+        final_video_path, success = process_story_to_videos_image_based(
+            openai_key, story_file, output_dir, voice, platform_specs
+        )
+        
+        if success and final_video_path and os.path.exists(final_video_path):
+            if progress_callback:
+                progress_callback(100)
+            if status_callback:
+                status_callback("✅ Video başarıyla oluşturuldu!")
+            return final_video_path, True, story_data
         else:
-            print(f"Scene {i} could not be created!")
-    
-    if not video_clips:
-        print("No video clips could be created!")
-        return
-    
-    print(f"\n{len(video_clips)} scenes successfully created. Combining video...")
-    
-    # Combine all clips
-    final_video = concatenate_videoclips(video_clips)
-    
-    # Save video
-    safe_title = "".join(c for c in story_data['story_title'] if c.isalnum() or c in (' ', '-', '_')).rstrip()
-    output_file = os.path.join(output_dir, f"{safe_title.replace(' ', '_')}.mp4")
-    final_video.write_videofile(output_file, fps=24)
-    
-    print(f"\n✅ Video successfully created: {output_file}")
-    print(f"📊 Total duration: {total_duration:.1f} seconds")
-    print(f"🎬 Number of scenes: {len(video_clips)}")
-
-def main():
-    # Check command line arguments
-    if len(sys.argv) > 1:
-        story_file = sys.argv[1]
-        
-        if not os.path.exists(story_file):
-            print(f"Error: {story_file} file not found!")
-            return
-    else:
-        # Get filename from user
-        story_file = input("Please enter the name of the story.json file: ")
-        
-        if not story_file:
-            print("No filename entered!")
-            return
+            return None, False, story_data
             
-        if not story_file.endswith('.json'):
-            story_file += '.json'
-        
-        if not os.path.exists(story_file):
-            print(f"Error: {story_file} file not found!")
-            return
-    
-    print(f"🎬 {story_file} Video Creator")
-    print("=" * 50)
-    
-    create_video(story_file)
-
-if __name__ == "__main__":
-    main()
+    except Exception as e:
+        print(f"Video generation error: {str(e)}")
+        return None, False, None

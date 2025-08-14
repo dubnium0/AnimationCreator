@@ -1,0 +1,77 @@
+{
+  "scenes": [
+    {
+      "scene_number": 1,
+      "narration": "Once upon a time, in the vast African savanna, a lioness gave birth to a litter of adorable lion cubs.",
+      "image_prompt": "Illustrate a lioness resting under the shade of a tree with her cute lion cubs playing around her.",
+      "duration": 5,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 2,
+      "narration": "The lion cubs were full of energy, chasing each other and practicing their hunting skills under the watchful eyes of their mother.",
+      "image_prompt": "Show the lion cubs playfully pouncing on each other with the lioness looking on attentively.",
+      "duration": 3,
+      "background_music": "playful_ukulele"
+    },
+    {
+      "scene_number": 3,
+      "narration": "As the days passed, the lion cubs grew stronger and learned essential survival skills from their mother.",
+      "image_prompt": "Illustrate the lion cubs practicing stalking and pouncing on a pretend prey with the lioness teaching them.",
+      "duration": 4,
+      "background_music": "upbeat_piano"
+    },
+    {
+      "scene_number": 4,
+      "narration": "One day, the lioness led her cubs on their first hunt. They stealthily approached a herd of zebras, ready to make their first kill.",
+      "image_prompt": "Show the lioness and cubs crouching in the tall grass, preparing to ambush the zebras.",
+      "duration": 6,
+      "background_music": "adventure_theme"
+    },
+    {
+      "scene_number": 5,
+      "narration": "With a swift and coordinated attack, the lioness and her cubs managed to catch a young zebra, providing a well-deserved meal for the family.",
+      "image_prompt": "Illustrate the lioness and cubs feasting on the freshly caught zebra, showcasing their successful hunt.",
+      "duration": 4,
+      "background_music": "tribal_drums"
+    },
+    {
+      "scene_number": 6,
+      "narration": "The lion cubs grew rapidly, turning into majestic young lions with impressive manes for the males.",
+      "image_prompt": "Show the lion cubs now as young lions, with the male lions displaying their beautiful mane.",
+      "duration": 3,
+      "background_music": "majestic_orchestral"
+    },
+    {
+      "scene_number": 7,
+      "narration": "As the young lions matured, they started to explore their territory, marking their boundaries with powerful roars.",
+      "image_prompt": "Illustrate the young lions standing on a rock, roaring loudly with the savanna landscape in the background.",
+      "duration": 4,
+      "background_music": "savanna_ambience"
+    },
+    {
+      "scene_number": 8,
+      "narration": "Eventually, the young male lions left the pride to find their own territories and establish themselves as dominant males.",
+      "image_prompt": "Show the young male lions walking away from the pride, ready to start their own journey.",
+      "duration": 4,
+      "background_music": "wistful_flute"
+    },
+    {
+      "scene_number": 9,
+      "narration": "Meanwhile, the lioness continued to lead the pride, hunting for food and nurturing the next generation of lion cubs.",
+      "image_prompt": "Illustrate the lioness hunting with the pride and caring for the new lion cubs.",
+      "duration": 4,
+      "background_music": "tribal_beat"
+    },
+    {
+      "scene_number": 10,
+      "narration": "And so, the circle of life continued in the African savanna, with the lioness and her pride thriving in their natural habitat.",
+      "image_prompt": "Show the lioness and her pride under the vast African sky, symbolizing the harmony of nature.",
+      "duration": 3,
+      "background_music": "nature_sounds_calm"
+    }
+  ],
+  "story_title": "The Lion's Circle of Life",
+  "target_age_group": "5-10",
+  "total_duration": 40
+}

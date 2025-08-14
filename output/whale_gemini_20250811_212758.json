@@ -1,0 +1,64 @@
+{
+  "story_title": "The Journey of Echo: A Humpback Whale's Life",
+  "animal_name": "Humpback Whale",
+  "total_scenes": 8,
+  "total_duration": 64,
+  "scenes": [
+    {
+      "scene_number": 1,
+      "title": "Birth in Warm Waters",
+      "narration": "In the warm, turquoise waters near Hawaii, a baby humpback whale, named Echo, is born. His mother gently nudges him to the surface for his first breath, a life-giving gasp of air.",
+      "image_prompt": "Underwater scene of a newborn humpback whale calf, Echo, surfacing with its mother in crystal clear turquoise waters. Sunlight filters through the water, illuminating the whales. The mother is large and protective, with distinctive humpback features. The calf is smaller and lighter in color. Gentle, serene mood.",
+      "duration": 8
+    },
+    {
+      "scene_number": 2,
+      "title": "Learning to Breathe",
+      "narration": "Echo learns to control his breathing, a crucial skill for a marine mammal. His mother guides him, showing him how to hold his breath for longer periods underwater, and where to find the surface.",
+      "image_prompt": "Close-up view of a mother humpback whale teaching her calf, Echo, how to breathe. The calf is breaching the surface, exhaling a visible spout of air. The mother is beside him, watching attentively. Water droplets sparkle in the sunlight. Focus on the breathing and mother-calf bond.",
+      "duration": 8
+    },
+    {
+      "scene_number": 3,
+      "title": "Nursing and Growing",
+      "narration": "Echo drinks his mother's rich milk, growing rapidly. He needs to gain strength for the long migration to colder feeding grounds, far to the north. He playfully follows her every move.",
+      "image_prompt": "Underwater scene of Echo, the humpback calf, nursing from his mother. The milk is shown as a stream of white, nutrient-rich liquid. The calf is close to the mother, and they are surrounded by smaller, colorful fish. The scene is peaceful and shows the bond between mother and child.",
+      "duration": 8
+    },
+    {
+      "scene_number": 4,
+      "title": "The Long Migration",
+      "narration": "The time has come for the long journey north. Echo and his mother join other humpbacks, forming a pod. They travel thousands of miles, guided by instinct and the sun.",
+      "image_prompt": "A pod of humpback whales migrating through the open ocean. The whales are swimming in formation, with Echo and his mother near the front. The ocean is deep blue, and the sky is a light blue with wispy clouds. The scene conveys a sense of vastness and determination.",
+      "duration": 8
+    },
+    {
+      "scene_number": 5,
+      "title": "Feeding Frenzy",
+      "narration": "Arriving in the Arctic, Echo and the other whales find plentiful food. They use bubble-net feeding, working together to trap schools of krill and small fish. It's an all-you-can-eat buffet!",
+      "image_prompt": "An underwater view of humpback whales using bubble-net feeding. A group of whales are swimming in a circle, creating a net of bubbles to trap krill. Echo is observing. The water is murky with krill, and the whales' mouths are open wide. The scene is chaotic and energetic.",
+      "duration": 8
+    },
+    {
+      "scene_number": 6,
+      "title": "Learning to Sing",
+      "narration": "Echo listens to the songs of the adult male humpbacks. These complex melodies, sung only by males, are used to attract mates. He tries to mimic their songs, practicing his vocalizations.",
+      "image_prompt": "Underwater scene of an adult male humpback whale singing. The whale is surrounded by sound waves, which are visualized as shimmering lines. Echo, as a juvenile, is listening attentively in the background. The water is dark and mysterious, with bioluminescent organisms adding a touch of light.",
+      "duration": 8
+    },
+    {
+      "scene_number": 7,
+      "title": "Facing Predators",
+      "narration": "Life in the ocean is not without danger. Orcas, or killer whales, are predators of humpbacks. Echo learns to recognize their calls and stay close to his mother for protection as they quickly swim away.",
+      "image_prompt": "A tense underwater scene of a mother humpback whale protecting Echo from a pod of orcas (killer whales). The orcas are circling, their sharp teeth visible. The mother humpback is shielding Echo with her body. The water is churning, and the scene is filled with tension.",
+      "duration": 8
+    },
+    {
+      "scene_number": 8,
+      "title": "A Whale's Future",
+      "narration": "Years later, Echo returns to the warm waters where he was born, ready to start his own family. He has learned to survive and thrive, a magnificent humpback whale in the vast ocean. He sings his song to the world.",
+      "image_prompt": "A majestic humpback whale, Echo, breaches the surface of the ocean in the warm waters of Hawaii. The sun is setting, casting a golden glow over the water. Echo's spout sprays into the air, creating a rainbow. The scene is triumphant and hopeful, showcasing Echo's strength and beauty. Whales singing their song.",
+      "duration": 8
+    }
+  ]
+}

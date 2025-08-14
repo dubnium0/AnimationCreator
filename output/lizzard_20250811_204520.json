@@ -1,0 +1,62 @@
+{
+  "scenes": [
+    {
+      "scene_number": 1,
+      "narration": "In a hot and dry desert, a baby lizard hatches from its egg. The tiny lizard looks around with its bright eyes, ready to explore the world.",
+      "image_prompt": "Illustrate a baby lizard hatching from a sandy-colored egg in the desert, surrounded by cacti and rocks.",
+      "duration": 4,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 2,
+      "narration": "The baby lizard scampers over the sandy ground, using its long tail to balance as it hunts for small insects to eat.",
+      "image_prompt": "Show the baby lizard with its long tail raised, searching for insects among desert plants.",
+      "duration": 3,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 3,
+      "narration": "As the sun sets, the baby lizard finds a safe crevice in a rock to curl up and rest, blending in perfectly with its surroundings.",
+      "image_prompt": "Illustrate the baby lizard camouflaged against a rocky background at dusk.",
+      "duration": 4,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 4,
+      "narration": "Days pass, and the baby lizard grows bigger and stronger, shedding its skin to allow for more growth. It's now ready to find a mate.",
+      "image_prompt": "Show the young lizard shedding its skin, revealing a shiny new layer underneath.",
+      "duration": 4,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 5,
+      "narration": "The young lizard performs a series of push-ups to show off its strength and dominance to attract a mate.",
+      "image_prompt": "Illustrate the lizard doing push-ups on a rock, looking confident and strong.",
+      "duration": 3,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 6,
+      "narration": "A female lizard is impressed by the male's display and the two engage in a courtship dance, bobbing their heads and flicking their tongues.",
+      "image_prompt": "Show the male and female lizards in a courtship dance, with their heads bobbing and tongues flicking.",
+      "duration": 4,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 7,
+      "narration": "After mating, the female lizard lays her eggs in a shallow burrow she digs in the warm sand, carefully covering them to keep them safe.",
+      "image_prompt": "Illustrate the female lizard laying eggs in a sandy burrow, with the male lizard nearby as a protector.",
+      "duration": 4,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 8,
+      "narration": "The cycle continues as the eggs hatch, and new baby lizards emerge into the desert, ready to begin their own incredible journey.",
+      "image_prompt": "Show the baby lizards hatching from their eggs, with the desert landscape in the background.",
+      "duration": 3,
+      "background_music": "nature_sounds_gentle"
+    }
+  ],
+  "story_title": "The Lizard's Desert Adventure",
+  "total_duration": 29
+}

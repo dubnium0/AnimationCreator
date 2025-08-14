@@ -1,0 +1,48 @@
+{
+  "scenes": [
+    {
+      "scene_number": 1,
+      "narration": "In a forest clearing, a mother turkey carefully tends to her nest full of eggs, keeping them warm and safe from predators.",
+      "image_prompt": "Illustrate a mother turkey sitting on a nest of eggs in a sunny forest clearing, surrounded by colorful wildflowers and chirping birds.",
+      "duration": 5,
+      "background_music": "nature_sounds_gentle"
+    },
+    {
+      "scene_number": 2,
+      "narration": "After weeks of waiting, the eggs start to hatch, and tiny fluffy turkey chicks emerge, chirping excitedly as they meet the world for the first time.",
+      "image_prompt": "Create a scene showing the newly hatched turkey chicks with their mother, exploring the grassy area around the nest, under the watchful eye of the mother turkey.",
+      "duration": 5,
+      "background_music": "bird_chirping"
+    },
+    {
+      "scene_number": 3,
+      "narration": "As the turkey chicks grow, they eagerly follow their mother around the forest, learning important skills like foraging for food and staying alert for danger.",
+      "image_prompt": "Illustrate the young turkey chicks pecking at seeds on the ground while the mother turkey watches protectively, with tall trees and a gentle stream in the background.",
+      "duration": 5,
+      "background_music": "forest_ambience"
+    },
+    {
+      "scene_number": 4,
+      "narration": "The young turkeys, now called poults, start to develop their feathers and grow bigger, becoming more independent but still staying close to their mother for guidance.",
+      "image_prompt": "Show the growing poults exploring the forest on their own but within sight of the mother turkey, with sunlight filtering through the leaves overhead.",
+      "duration": 5,
+      "background_music": "gentle_piano"
+    },
+    {
+      "scene_number": 5,
+      "narration": "As the seasons change, the turkeys prepare for winter by finding food and shelter together as a family, strengthening their bond through shared experiences.",
+      "image_prompt": "Create a scene of the turkey family foraging for berries and seeds in a picturesque autumn forest, with colorful leaves falling around them.",
+      "duration": 5,
+      "background_music": "calm_guitar"
+    },
+    {
+      "scene_number": 6,
+      "narration": "With winter approaching, the turkeys gather in a cozy spot to roost for the night, huddling together for warmth and safety as the snow begins to fall.",
+      "image_prompt": "Illustrate the turkey family perched in a leafless tree, their feathers fluffed up against the cold, with a snowy landscape stretching out below them.",
+      "duration": 5,
+      "background_music": "gentle_flute"
+    }
+  ],
+  "story_title": "The Turkey Family",
+  "total_duration": 30
+}
