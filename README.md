@@ -1,12 +1,10 @@
 # Animal Life Animation Creator
 
-This project is a Python application that creates educational animations about animal lives using OpenAI's API.
+This project is a Python application that creates educational animations about animal lives.
 
 ## Preview
 
 ![Application Screenshot](ss.jpeg)
-
-*The web application interface showing the story creation and video generation features*
 
 ## Features
 
